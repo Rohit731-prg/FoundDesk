@@ -89,3 +89,56 @@ export const deleteItem = async (c: Context) => {
         return c.json({ message: error.message }, 500);
     }
 }
+
+export const getAllItems = async (c: Context) => {
+    try {
+        const items = await collection_item.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "post_by",
+                    foreignField: "_id",
+                    as: "user",
+                    pipeline: [
+                        { $project: { password: 0, __v: 0 } }
+                    ]
+                }
+            }, {
+                $unwind: "$user"
+            }
+        ]).toArray();
+        if (items.length === 0) return c.json({ message: "No items found" }, 404);
+        return c.json({ items }, 200);
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
+    }
+}
+
+export const getitemByFilter = async (c: Context) => {
+    const { category } = await c.req.json();
+    if (!category) return c.json({ message: "Category is required" }, 400);
+
+    try {
+        const items = await collection_item.aggregate([
+            {
+                $match: { category },
+                $lookup: {
+                    from: "users",
+                    localField: "post_by",
+                    foreignField: "_id",
+                    as: "user",
+                    pipeline: [
+                        { $project: { password: 0, __v: 0 } }
+                    ]
+                }
+            }, {
+                $unwind: "$user"
+            }
+        ]).toArray();
+
+        if (items.length === 0) return c.json({ message: "No items found for this category" }, 404);
+        return c.json({ items }, 200);
+    } catch (error: any) {
+        return c.json({ message: error.message }, 500);
+    }
+}

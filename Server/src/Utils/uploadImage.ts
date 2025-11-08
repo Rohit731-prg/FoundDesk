@@ -3,7 +3,6 @@ import cloudinary from "../Config/CoudinaryConfig";
 export const generateUrl = async (file: File): Promise<object> => {
     try {
         const arrayBuffer = await file.arrayBuffer();
-        console.log("arrayBuffer:", arrayBuffer);
         const buffer = Buffer.from(arrayBuffer);
 
         const result = await new Promise((resolve, reject) => {

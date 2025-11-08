@@ -40,6 +40,7 @@ export const signUp = async (c: Context) => {
             image_public_id: public_id,
             role,
             createdAt: new Date(),
+            auth: false,
         };
 
         await collection_user.insertOne(newUser);
@@ -58,7 +59,8 @@ export const login = async (c: Context) => {
 
         const compair = await bcrypt.compare(password, user.password);
         if (!compair) return c.json({ message: "Invalid credentials" }, 401);
-
+        if (!user.auth) return c.json({ message: "User is not authenticated" }, 400);
+        
         const token = await generateToken({ id: user._id, email: user.email, role: user.role });
         if (!token) return c.json({ message: "Failed to generate token" }, 500);
 
@@ -73,5 +75,21 @@ export const login = async (c: Context) => {
         return c.json({ message: "Login successful", user: userDetails, token: token }, 200);
     } catch (error) {
         return c.json({ message: "Internal server error" }, 500);
+    }
+}
+
+export const authenticateUser = async (c: Context) => {
+    const { email } = await c.req.json();
+    if (!email) return c.json({ message: "Email is required" }, 400);
+
+    try {
+        const user = await collection_user.findOne({ email });
+        if (!user) return c.json({ message: "User not found" }, 404);
+        if (user.auth) return c.json({ message: "User is already authenticated" }, 400);
+
+        await collection_user.updateOne({ email }, { $set: { auth: true } });
+        return c.json({ message: "User authenticated successfully" }, 200);
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
     }
 }
