@@ -1,9 +1,11 @@
-// import Login from "./Components/Login"
-import Signup from "./Components/Signup"
+import Login from "./Components/Login"
+import Navbar from "./Components/Navbar"
+// import Signup from "./Components/Signup"
 
 function App() {
   return (
-    < Signup />
+    // < Login />
+    <Navbar />
   )
 }
 

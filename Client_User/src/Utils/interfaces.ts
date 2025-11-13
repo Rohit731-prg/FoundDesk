@@ -8,3 +8,8 @@ export interface signUpInterface {
     auth: boolean;
     image: File | null;
 }
+
+export interface loginInterface {
+    email: string,
+    password: string
+}
