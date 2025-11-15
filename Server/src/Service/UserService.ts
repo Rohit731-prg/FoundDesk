@@ -60,7 +60,7 @@ export const login = async (c: Context) => {
         const compair = await bcrypt.compare(password, user.password);
         if (!compair) return c.json({ message: "Invalid credentials" }, 401);
         if (!user.auth) return c.json({ message: "User is not authenticated" }, 400);
-        
+
         const token = await generateToken({ id: user._id, email: user.email, role: user.role });
         if (!token) return c.json({ message: "Failed to generate token" }, 500);
 
@@ -89,6 +89,22 @@ export const authenticateUser = async (c: Context) => {
 
         await collection_user.updateOne({ email }, { $set: { auth: true } });
         return c.json({ message: "User authenticated successfully" }, 200);
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
+    }
+}
+
+export const logout = async (c: Context) => {
+    try {
+        setCookie(c, "token", "", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            path: "/",
+            maxAge: 0, // delete cookie
+        });
+
+        return c.json({ message: "Logout successful" }, 200);
     } catch (error) {
         return c.json({ message: (error as Error).message }, 500);
     }

@@ -1,11 +1,24 @@
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 import Login from "./Components/Login"
-import Navbar from "./Components/Navbar"
-// import Signup from "./Components/Signup"
+import Signup from "./Components/Signup"
+import ProtectedRoute from "./Utils/ProtectedRoute"
+import Home from "./Components/Home"
+import Seting from "./Components/Seting"
+import Profile from "./Components/Setting_pages/Profile"
 
 function App() {
   return (
-    // < Login />
-    <Navbar />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login/>} />
+        <Route path="/signup" element={<Signup/>} />
+
+        {/* Protected Routes */}
+        <Route path="/home" element={ <ProtectedRoute><Home/></ProtectedRoute>} />
+        <Route path="/setting" element={ <ProtectedRoute><Seting/></ProtectedRoute>} />
+        <Route path="/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>} />
+      </Routes>
+    </Router>
   )
 }
 

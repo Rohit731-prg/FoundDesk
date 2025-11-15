@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { IoIosArrowBack } from "react-icons/io"
 import type { loginInterface } from "../Utils/interfaces";
 import { MdEmail } from "react-icons/md";
@@ -6,26 +6,33 @@ import { FaIdCard } from "react-icons/fa";
 import Lottie from "lottie-react";
 import login from "../assets/Login.json";
 import useUserStore from "../Store/UserStore";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const { loginUser } = useUserStore();
-  const [uuserDetails, setUserDetails] = useState<loginInterface>({
+  const [userDetails, setUserDetails] = useState<loginInterface>({
     email: "",
     password: ""
   });
 
   const handleChange = (key: keyof loginInterface) => (e: ChangeEvent<HTMLInputElement>) => {
-    setUserDetails({ ...uuserDetails, [key]: e.target.value });
+    setUserDetails({ ...userDetails, [key]: e.target.value });
   };
 
   const loginInfo = [
-    { id: 1, name: "Email", type: "email", placeholder: "Enter your email", required: true, symbol: MdEmail, value: uuserDetails.email, onChange: handleChange("email") },
-    { id: 2, name: "password", type: "password", placeholder: "Enter your password", required: true, symbol: FaIdCard, value: uuserDetails.password, onChange: handleChange("password") },
+    { id: 1, name: "Email", type: "email", placeholder: "Enter your email", required: true, symbol: MdEmail, value: userDetails.email, onChange: handleChange("email") },
+    { id: 2, name: "password", type: "password", placeholder: "Enter your password", required: true, symbol: FaIdCard, value: userDetails.password, onChange: handleChange("password") },
   ];
 
-  const handelSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+  const handelSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loginUser(uuserDetails);
+    const result = await loginUser(userDetails);
+    console.log("result");
+    if (result) {
+      localStorage.setItem('auth', 'true');
+      navigate('/home');
+    }
   }
 
   return (
@@ -61,6 +68,7 @@ function Login() {
 
           <button
           className="bg-blue-500 rounded-full py-3 w-full text-white font-semibold"
+          type="submit"
           >
             SUBMIT
           </button>
