@@ -4,6 +4,7 @@ import Navbar from "./Navbar"
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
+
 function Seting() {
     const navigate = useNavigate();
     const { user, logoutUser } = useUserStore();

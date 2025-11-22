@@ -5,6 +5,7 @@ import ProtectedRoute from "./Utils/ProtectedRoute"
 import Home from "./Components/Home"
 import Seting from "./Components/Seting"
 import Profile from "./Components/Setting_pages/Profile"
+import Posts from "./Components/Posts"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/home" element={ <ProtectedRoute><Home/></ProtectedRoute>} />
         <Route path="/setting" element={ <ProtectedRoute><Seting/></ProtectedRoute>} />
         <Route path="/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>} />
+        <Route path="/products" element={ <ProtectedRoute><Posts/></ProtectedRoute>} />
       </Routes>
     </Router>
   )

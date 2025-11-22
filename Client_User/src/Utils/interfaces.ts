@@ -13,3 +13,16 @@ export interface loginInterface {
     email: string,
     password: string
 }
+
+export interface itemIterface {
+    _id: string;
+    title: string;
+    description: string;
+    category: string;
+    location: string;
+    post_by: string;
+    status: string;
+    image: string;
+    image_public_id: string;
+    createdAt: string;
+}
