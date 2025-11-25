@@ -64,7 +64,7 @@ export const login = async (c: Context) => {
         const token = await generateToken({ id: user._id, email: user.email, role: user.role });
         if (!token) return c.json({ message: "Failed to generate token" }, 500);
 
-        setCookie(c, "token", token, { httpOnly: true, secure: true, sameSite: "strict", path: "/" });
+        setCookie(c, "token", token, { httpOnly: true, secure: false, sameSite: "strict", path: "/" });
         const userDetails = {
             _id: user._id,
             name: user.name,

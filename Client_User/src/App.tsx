@@ -3,9 +3,10 @@ import Login from "./Components/Login"
 import Signup from "./Components/Signup"
 import ProtectedRoute from "./Utils/ProtectedRoute"
 import Home from "./Components/Home"
-import Seting from "./Components/Seting"
+import Seting from "./Components/Setting"
 import Profile from "./Components/Setting_pages/Profile"
 import Posts from "./Components/Posts"
+import Post from "./Components/Post"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/setting" element={ <ProtectedRoute><Seting/></ProtectedRoute>} />
         <Route path="/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>} />
         <Route path="/products" element={ <ProtectedRoute><Posts/></ProtectedRoute>} />
+        <Route path="/product" element={ <ProtectedRoute><Post/></ProtectedRoute>} />
       </Routes>
     </Router>
   )

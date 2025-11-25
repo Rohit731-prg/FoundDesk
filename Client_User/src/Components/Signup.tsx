@@ -1,11 +1,15 @@
 import { PiStudentFill } from "react-icons/pi";
 import { IoIosArrowBack } from "react-icons/io";
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import type { signUpInterface } from "../Utils/interfaces";
 import { MdEmail } from "react-icons/md";
 import { FaIdCard } from "react-icons/fa";
+import useUserStore from "../Store/UserStore";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
+  const { signUp } = useUserStore();
   const [UserDetails, setUserDetails] = useState<signUpInterface>({
     name: "",
     email: "",
@@ -24,7 +28,7 @@ function Signup() {
   const signUpInfo = [
     { id: 1, name: "Name", type: "text", placeholder: "Enter your name", required: true, symbol: PiStudentFill, value: UserDetails.name, onChange: handleChange("name") },
     { id: 2, name: "Email", type: "email", placeholder: "Enter your email", required: true, symbol: MdEmail, value: UserDetails.email, onChange: handleChange("email") },
-    { id: 3, name: "collage id", type: "email", placeholder: "Enter your collage id", required: true, symbol: FaIdCard, value: UserDetails.collage_id, onChange: handleChange("collage_id") },
+    { id: 3, name: "collage id", type: "text", placeholder: "Enter your collage id", required: true, symbol: FaIdCard, value: UserDetails.collage_id, onChange: handleChange("collage_id") },
     { id: 4, name: "password", type: "password", placeholder: "Enter your password", required: true, symbol: FaIdCard, value: UserDetails.password, onChange: handleChange("password") },
     { id: 5, name: "confirm password", type: "password", placeholder: "Confirm your password", required: true, symbol: FaIdCard, value: UserDetails.confirm_password, onChange: handleChange("confirm_password") },
   ];
@@ -36,11 +40,17 @@ function Signup() {
       const reader = new FileReader();
       reader.onload = () => {
         setImageUrl(reader.result as string);
+        setUserDetails({ ...UserDetails, image: file });
       };
       reader.readAsDataURL(file);
     }
   }
 
+  const handelSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = await signUp(UserDetails);
+    if (result) navigate('/');
+  }
   return (
     <div className="h-screen bg-slate-200 p-10">
       <button
@@ -54,7 +64,7 @@ function Signup() {
       </header>
 
       <main>
-        <form className="mt-10">
+        <form className="mt-10" onSubmit={handelSubmit}>
           {signUpInfo.map((item) => (
             <div key={item.id}
               className="flex flex-row gap-2 p-3 items-center bg-white mb-3 rounded-full">
@@ -102,7 +112,7 @@ function Signup() {
         </div>
         
         <div>
-          <p className="">Alredy have an account ? <span className="text-green-400">Login</span></p>
+          <p className="">Alredy have an account ? <span onClick={() => navigate("/")} className="text-green-400">Login</span></p>
         </div>
       </footer>
     </div>

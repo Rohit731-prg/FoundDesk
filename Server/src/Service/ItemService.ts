@@ -13,6 +13,7 @@ export const postItem = async (c: Context) => {
     const post_by = formData.get("post_by") as string;
     const status = formData.get("status") as string;
     const image = formData.get("image") as File | null;
+    console.log(post_by);
 
     const parsed = ItemSchma.safeParse({ title, description, category, location, post_by, status });
 
@@ -35,7 +36,7 @@ export const postItem = async (c: Context) => {
             description,
             category,
             location,
-            post_by,
+            post_by: new ObjectId(post_by),
             status,
             image: url,
             image_public_id: public_id,
@@ -45,6 +46,7 @@ export const postItem = async (c: Context) => {
         await collection_item.insertOne(newItem);
         return c.json({ message: "Item posted successfully" }, 201);
     } catch (error: any) {
+        console.log(error as Error);
         return c.json({ message: error.message }, 500);
     }
 }
@@ -117,7 +119,7 @@ export const getAllItems = async (c: Context) => {
 export const getitemByFilter = async (c: Context) => {
     const { category } = await c.req.json();
     if (!category) return c.json({ message: "Category is required" }, 400);
-
+    console.log(category);
     try {
         const items = await collection_item.aggregate([
             {

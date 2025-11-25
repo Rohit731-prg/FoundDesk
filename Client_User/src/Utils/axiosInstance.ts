@@ -1,6 +1,6 @@
 import axios from "axios"
 
 export const axiosIntance = axios.create({
-    withCredentials: false,
-    baseURL: "http://localhost:5000/api/"
+    withCredentials: true,
+    baseURL: "http://localhost:8000/api/"
 });

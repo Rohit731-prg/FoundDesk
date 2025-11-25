@@ -25,4 +25,10 @@ export interface itemIterface {
     image: string;
     image_public_id: string;
     createdAt: string;
+    user: {
+        _id: string;
+        name: string;
+        email: string;
+        image: string;
+    }
 }

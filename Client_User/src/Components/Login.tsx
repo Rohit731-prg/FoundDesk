@@ -76,7 +76,7 @@ function Login() {
 
         <footer>
           <p className="text-center my-3">-------------------- OR ------------------</p>
-          <p className="text-center">Don't have an account? <span><span className="text-blue-500">Sign up</span></span></p>
+          <p className="text-center">Don't have an account? <span><span onClick={() => navigate("/signup")} className="text-blue-500">Sign up</span></span></p>
         </footer>
       </main>
     </div>

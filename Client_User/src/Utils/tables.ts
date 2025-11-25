@@ -17,3 +17,14 @@ export const settingList = [
     { id: 2, symbol: IoLockOpenOutline, name: "Change Password", link: ""},
     { id: 3, symbol: CiCircleQuestion, name: "Ask Question", link: ""},
 ];
+
+export const postCategory = [
+    { id: 0, name: "All" },
+    { id: 1, name: "Electronics" },
+    { id: 2, name: "Accessories" },
+    { id: 3, name: "Bags" },
+    { id: 4, name: "Documents" },
+    { id: 5, name: "Clothing" },
+    { id: 6, name: "Vehicles" },
+    { id: 7, name: "Miscellaneous" },
+]

@@ -7,6 +7,6 @@ const router = new Hono();
 router.post("/signup", signUp);
 router.post("/login", login);
 router.put("/authenticate", verifyMiddleware, authenticateUser);
-router.get("/logout", verifyMiddleware, logout);
+router.get("/logout", logout);
 
 export default router;

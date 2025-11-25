@@ -13,7 +13,7 @@ function Seting() {
         const result = logoutUser();
         if (!result) return;
         localStorage.removeItem('auth');
-
+        navigate('/');
     }
     return (
         <div className="p-5">
