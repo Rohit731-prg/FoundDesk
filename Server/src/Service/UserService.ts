@@ -109,3 +109,19 @@ export const logout = async (c: Context) => {
         return c.json({ message: (error as Error).message }, 500);
     }
 }
+
+export const updatePassword = async (c: Context) => {
+    const { oldPassword, newPassword } = await c.req.json();
+    const { id } = c.req.param();
+    try {
+        const user = await collection_user.findOne({ new ObjectId(_id): id });
+        if (!user) return c.json({ message: "User not found" }, 404);
+        const compair = user?.password == oldPassword;
+        if (!compair) return c.json({ message: "Password not match" }, 404);
+
+        await collection_user.updateOne(id, { password: newPassword });
+        return c.json({ message: "Password is updated "});
+    } catch (error: any) {
+        return c.json({ message: error.message as string });
+    }
+}

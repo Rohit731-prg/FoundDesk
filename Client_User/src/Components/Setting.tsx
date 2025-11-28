@@ -23,7 +23,7 @@ function Seting() {
                 <p className="text-2xl font-semibold">SETTING</p>
 
                 <section className="mt-5 flex flex-row gap-5 items-start border-b border-gray-400 py-5">
-                    <img src={user?.image as string} alt="" className="w-20 h-20 rounded-full shadow-xl" />
+                    <img src={user?.image as string} alt="" className="w-20 h-20 rounded-full shadow-xl object-cover" />
                     <div className="mt-2">
                         <p className="text-xl font-medium">{user?.name as string}</p>
                         <p className="text-sm text-gray-400">{user?.email as string}</p>

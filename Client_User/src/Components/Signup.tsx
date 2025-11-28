@@ -90,7 +90,7 @@ function Signup() {
             </label>
             <input type="file" required id="image" className="hidden" onChange={(e) => updateImage(e)} />
           </div>
-          <button type="submit" className="w-full py-2 bg-blue-400 rounded-full text-white my-3">
+          <button type="submit" className="w-full py-2 bg-blue-500 rounded-full text-white my-3">
             SUBMIT
           </button>
         </form>
