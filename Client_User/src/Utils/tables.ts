@@ -13,7 +13,7 @@ export const navBer = [
 
 export const settingList = [
     { id: 1, symbol: PiStudent, name: "User Profile", link: "/profile"},
-    { id: 2, symbol: IoLockOpenOutline, name: "Change Password", link: ""},
+    { id: 2, symbol: IoLockOpenOutline, name: "Change Password", link: "/passwordChange"},
     { id: 3, symbol: CiCircleQuestion, name: "Ask Question", link: ""},
 ];
 

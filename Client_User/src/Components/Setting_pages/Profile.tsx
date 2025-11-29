@@ -20,7 +20,7 @@ function Profile() {
             </button>
             <main className="flex flex-col items-center">
                 <p className="text-lg font-medium">User Profile</p>
-                <img src={user.image as string} alt="" className="w-50 h-50 mt-5 rounded-full shadow-xl " />
+                <img src={user.image as string} alt="" className="w-50 h-50 mt-5 rounded-full shadow-xl object-cover" />
 
                 <section className="w-full px-10 mt-10">
                     {profileData.map((profile) => (

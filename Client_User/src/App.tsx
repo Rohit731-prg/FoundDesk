@@ -7,6 +7,7 @@ import Seting from "./Components/Setting"
 import Profile from "./Components/Setting_pages/Profile"
 import Posts from "./Components/Posts"
 import Post from "./Components/Post"
+import PasswordChange from "./Components/Setting_pages/PasswordChange"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/home" element={ <ProtectedRoute><Home/></ProtectedRoute>} />
         <Route path="/setting" element={ <ProtectedRoute><Seting/></ProtectedRoute>} />
         <Route path="/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>} />
+        <Route path="/passwordChange" element={ <ProtectedRoute><PasswordChange/></ProtectedRoute>} />
         <Route path="/products" element={ <ProtectedRoute><Posts/></ProtectedRoute>} />
         <Route path="/product" element={ <ProtectedRoute><Post/></ProtectedRoute>} />
       </Routes>
