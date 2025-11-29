@@ -27,7 +27,7 @@ function Posts() {
       <Navbar />
 
       {/* Categories Scroll */}
-      <div className="px-5 py-2">
+      <div className="px-5 py-5">
           <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
             {postCategory.map((category) => (
               <button

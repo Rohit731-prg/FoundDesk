@@ -8,7 +8,6 @@ import { AiFillProduct } from "react-icons/ai";
 export const navBer = [
     { id: 1, name: "Home", link: "/home", symbl: PiStudentFill },
     { id: 2, name: "products", link: "/products", symbl: AiFillProduct },
-    { id: 3, name: "Home", link: "/home", symbl: PiStudentFill },
     { id: 4, name: "Setting", link: "/setting", symbl: IoSettings  },
 ];
 

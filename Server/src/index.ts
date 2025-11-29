@@ -1,14 +1,15 @@
 import { Hono } from 'hono'
 import UserRouter from "./Route/UserRoute";
 import ItemRouter from "./Route/itemRoute";
+import AdminRouter from "./Route/AdminRoute";
 import { cors } from "hono/cors";
 
 const app = new Hono()
 app.use(
   '*',
   cors({
-    origin: 'http://localhost:5173',
-    credentials: true, // VERY IMPORTANT
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    credentials: true,
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
   })
@@ -21,6 +22,7 @@ app.get('/', (c) => {
 
 app.route('/api/user', UserRouter);
 app.route('/api/item', ItemRouter);
+app.route('/api/admin', AdminRouter);
 
 
 export default app
