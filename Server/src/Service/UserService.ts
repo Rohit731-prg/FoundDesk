@@ -5,6 +5,8 @@ import { generateToken } from "../Utils/token";
 import { setCookie } from "hono/cookie";
 import { UserSchema } from "../Model/UserModel";
 import { generateUrl } from "../Utils/uploadImage";
+import { ObjectId } from "mongodb";
+import { password } from "bun";
 
 export const signUp = async (c: Context) => {
     const formData = await c.req.formData();
@@ -112,15 +114,22 @@ export const logout = async (c: Context) => {
 
 export const updatePassword = async (c: Context) => {
     const { oldPassword, newPassword } = await c.req.json();
-    const { id } = c.req.param();
+    if (!oldPassword || !newPassword) return c.json({ message: "Old and new password are required" }, 400);
+    const student = c.get("student");
     try {
-        const user = await collection_user.findOne({ new ObjectId(_id): id });
-        if (!user) return c.json({ message: "User not found" }, 404);
-        const compair = user?.password == oldPassword;
+        const compair = await bcrypt.compare(oldPassword, student?.password as string);
         if (!compair) return c.json({ message: "Password not match" }, 404);
-
-        await collection_user.updateOne(id, { password: newPassword });
-        return c.json({ message: "Password is updated "});
+        if (oldPassword == newPassword) return c.json({ message: "Old and new password are same" }, 400);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await collection_user.updateOne({ _id: new ObjectId(student?._id) }, { $set: { password: hashedPassword } });
+        const newUserDetails = {
+            _id: student?._id,
+            name: student?.name,
+            email: student?.email,
+            collage_id: student?.collage_id,
+            image: student?.image,
+        };
+        return c.json({ message: "Password is updated successfully", user: newUserDetails }, 200);
     } catch (error: any) {
         return c.json({ message: error.message as string });
     }

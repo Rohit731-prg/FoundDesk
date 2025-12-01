@@ -1,6 +1,8 @@
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../Store/UserStore";
+import loading from "../../assets/loading.json";
+import Lottie from "lottie-react";
 
 function Profile() {
     const { user } = useUserStore();
@@ -11,7 +13,11 @@ function Profile() {
         { id: 3, name: "Collage Id", value: user?.collage_id as string },
     ];
 
-    if (!user) return <p>Loading...!</p>
+    if (!user) return (
+        <div className="flex items-center justify-center h-screen">
+            <Lottie animationData={loading} loop={true} />
+        </div>
+    )
 
     return (
         <div className="p-5">

@@ -17,6 +17,7 @@ export const verifyMiddleware: MiddlewareHandler = async (c, next) => {
             const student = await collection_user.findOne({ _id: new ObjectId(docode.id as string) });
             if (!student) return c.json({ message: "Student not found" }, 401);
             if (!student.auth) return c.json({ message: "Student is not authenticated" }, 401);
+            c.set("student", student);
         }
 
         return next();

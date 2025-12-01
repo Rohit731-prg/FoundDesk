@@ -4,6 +4,8 @@ import Navbar from "./Navbar";
 import { postCategory } from "../Utils/tables";
 import type { itemIterface } from "../Utils/interfaces";
 import { useNavigate } from "react-router-dom";
+import loading from "../assets/loading.json";
+import Lottie from "lottie-react";
 
 function Posts() {
   const navigate = useNavigate();
@@ -40,7 +42,6 @@ function Posts() {
             ))}
           </div>
       </div>
-      <p className="mx-2">All Posts</p>
       {/* Posts Section */}
       <main className="p-5 flex flex-wrap gap-5 justify-center mt-4">
         {items.length > 0 ? (
@@ -75,8 +76,8 @@ function Posts() {
             </div>
           ))
         ) : (
-          <div className="text-center text-indigo-700 text-lg font-medium mt-10">
-            Loading...
+          <div className="w-full min-h-screen flex items-center justify-center">
+            <Lottie animationData={loading} loop={true} />
           </div>
         )}
       </main>

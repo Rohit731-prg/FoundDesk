@@ -13,7 +13,6 @@ export const postItem = async (c: Context) => {
     const post_by = formData.get("post_by") as string;
     const status = formData.get("status") as string;
     const image = formData.get("image") as File | null;
-    console.log(post_by);
 
     const parsed = ItemSchma.safeParse({ title, description, category, location, post_by, status });
 

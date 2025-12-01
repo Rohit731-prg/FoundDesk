@@ -8,11 +8,13 @@ import Profile from "./Components/Setting_pages/Profile"
 import Posts from "./Components/Posts"
 import Post from "./Components/Post"
 import PasswordChange from "./Components/Setting_pages/PasswordChange"
+import Error from "./Components/Error"
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="*" element={<Error />} />
         <Route path="/" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
 

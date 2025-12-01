@@ -6,6 +6,8 @@ import { MdEmail } from "react-icons/md";
 import { FaIdCard } from "react-icons/fa";
 import useUserStore from "../Store/UserStore";
 import { useNavigate } from "react-router-dom";
+import { Toaster } from "sonner";
+
 
 function Signup() {
   const navigate = useNavigate();
@@ -115,6 +117,7 @@ function Signup() {
           <p className="">Alredy have an account ? <span onClick={() => navigate("/")} className="text-green-400">Login</span></p>
         </div>
       </footer>
+      <Toaster />
     </div>
   )
 }

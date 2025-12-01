@@ -7,6 +7,7 @@ import Lottie from "lottie-react";
 import login from "../assets/Login.json";
 import useUserStore from "../Store/UserStore";
 import { useNavigate } from "react-router-dom";
+import { Toaster } from "sonner";
 
 function Login() {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ function Login() {
           <p className="text-center">Don't have an account? <span><span onClick={() => navigate("/signup")} className="text-blue-500">Sign up</span></span></p>
         </footer>
       </main>
+      <Toaster/>
     </div>
   )
 }
