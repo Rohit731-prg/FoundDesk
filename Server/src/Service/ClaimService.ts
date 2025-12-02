@@ -24,6 +24,8 @@ export const requestClaim = async (c: Context) => {
 
         const user_has_claimed = await collection_user.findOne({ _id: new ObjectId(claim_by) });
         if (!user_has_claimed) return c.json({ message: "User not found" }, 404);
+
+        
         if (user_has_claimed.role !== 'user') return c.json({ message: "Only users can claim items" }, 403);
 
         const imageDetails = await generateUrl(proof as File);

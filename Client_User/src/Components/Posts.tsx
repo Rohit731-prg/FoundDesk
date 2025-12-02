@@ -43,35 +43,27 @@ function Posts() {
           </div>
       </div>
       {/* Posts Section */}
-      <main className="p-5 flex flex-wrap gap-5 justify-center mt-4">
+      <main className="p-5 flex flex-col gap-5 justify-center mt-4">
         {items.length > 0 ? (
           items.map((item) => (
             <div
               onClick={() => selectItem(item)}
               key={item._id}
-              className="bg-white w-full sm:w-[45%] lg:w-[30%] rounded-xl shadow hover:shadow-md transition overflow-hidden"
+              className="w-full flex flex-row gap-3 py-3 border-b-2 border-gray-400"
             >
-              <img
-                src={item.image}
-                alt=""
-                className="w-full h-40 object-cover"
-              />
+              <img src={item?.image} alt="" className="w-1/2 object-cover h-44 rounded-sm" />
+              <div>
+                <p className="text-xl font-medium">{item?.title}</p>
+                <p className="text-md mb-2">{item?.description.length > 10 ? item?.description.slice(0, 30) + "..." : item?.description}</p>
 
-              <div className="p-4">
-                <div className="flex justify-between">
-                  <p className="text-lg font-semibold text-indigo-800">
-                    {item.title}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Lost at: {item?.createdAt.split("T")[0]}
-                  </p>
-                </div>
+                <p className="text-lg font-medium">Post on {item?.createdAt.split("T")[0]}</p>
+                <p className="text-green-700">{item?.status}</p>
 
-                <p className="mt-2 text-gray-700">
-                  {item.description.length < 80
-                    ? item.description
-                    : `${item.description.slice(0, 80)}...`}
-                </p>
+                <button 
+                onClick={() => navigate("/post")}
+                className="mt-2 bg-blue-600 text-white px-5 py-1 rounded-full">
+                  CLAIM
+                </button>
               </div>
             </div>
           ))

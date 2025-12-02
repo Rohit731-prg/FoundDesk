@@ -1,14 +1,12 @@
-import { useNavigate } from "react-router-dom";
 import useItemStore from "../Store/ItemStore"
 import { FaLongArrowAltLeft } from "react-icons/fa";
 
 function Post() {
-    const navigate = useNavigate();
     const { item } = useItemStore();
     return (
         <div className="p-5">
             <button 
-            onClick={() => navigate('/')}
+            onClick={() => window.history.back}
             className="p-3 rounded-full shadow-2xl bg-gray-200">
                 <FaLongArrowAltLeft />
             </button>

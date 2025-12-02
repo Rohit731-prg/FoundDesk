@@ -9,5 +9,5 @@ export const AdminSchema = z.object({
     image: z.string().optional(),
     image_public_id: z.string().optional(),
     createdAt: z.date().optional(),
-    role: z.enum(['admin', 'student']),
+    role: z.enum(['admin', 'staff']),
 });

@@ -42,9 +42,10 @@ export const Signup = async (c: Context) => {
     const phone = formData.get("phone") as string;
     const adminID = formData.get("adminID") as string;
     const password = formData.get("password") as string;
+    const role = formData.get("role") as string;
     const image = formData.get("image") as File | null;
 
-    const parsed = AdminSchema.safeParse({ name, email, phone, adminID, password });
+    const parsed = AdminSchema.safeParse({ name, email, phone, adminID, password, role });
     if (!parsed.success) {
         const errors = parsed.error.flatten().fieldErrors;
         return c.json({ message: "Validation failed", errors }, 400);
@@ -70,11 +71,10 @@ export const Signup = async (c: Context) => {
             image: url,
             image_public_id: public_id,
             createdAt: new Date(),
-            role: "admin"
+            role: role
         };
 
         await collection_Admin.insertOne(newAdmin);
-
         return c.json({ message: "Signup successful" }, 200);
     } catch (error: any) {
         return c.json({ message: error.message as string }, 500);

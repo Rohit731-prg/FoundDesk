@@ -1,6 +1,6 @@
 import { Context } from "hono";
 import { ItemSchma } from "../Model/ItemModel";
-import { collection_item, collection_user } from "../Config/DbConnection";
+import { collection_Admin, collection_item, collection_user } from "../Config/DbConnection";
 import { ObjectId } from "mongodb";
 import { deleteImage, generateUrl } from "../Utils/uploadImage";
 
@@ -11,10 +11,9 @@ export const postItem = async (c: Context) => {
     const category = formData.get("category") as string;
     const location = formData.get("location") as string;
     const post_by = formData.get("post_by") as string;
-    const status = formData.get("status") as string;
     const image = formData.get("image") as File | null;
 
-    const parsed = ItemSchma.safeParse({ title, description, category, location, post_by, status });
+    const parsed = ItemSchma.safeParse({ title, description, category, location, post_by });
 
     if (!parsed.success) {
         const errors = parsed.error.flatten().fieldErrors;
@@ -22,9 +21,9 @@ export const postItem = async (c: Context) => {
     }
     if (!image) return c.json({ message: "Image is required" }, 400);
     try {
-        const user = await collection_user.findOne({ _id: new ObjectId(post_by) });
-        if (!user) return c.json({ message: "User not found" }, 404);
-        if (user.role !== 'admin') return c.json({ message: "Only admin can post items" }, 403);
+        const user = await collection_Admin.findOne({ _id: new ObjectId(post_by) });
+        if (!user) return c.json({ message: "Admin or Staff not found" }, 404);
+        if (!['admin', 'staff'].includes(user?.role)) return c.json({ message: "Only admin can post items" }, 403);
 
         const imageDetails = await generateUrl(image as File);
         const url = (imageDetails as any).url;
@@ -36,7 +35,7 @@ export const postItem = async (c: Context) => {
             category,
             location,
             post_by: new ObjectId(post_by),
-            status,
+            status: "open",
             image: url,
             image_public_id: public_id,
             createdAt: new Date(),
@@ -96,16 +95,16 @@ export const getAllItems = async (c: Context) => {
         const items = await collection_item.aggregate([
             {
                 $lookup: {
-                    from: "users",
+                    from: "admin",
                     localField: "post_by",
                     foreignField: "_id",
-                    as: "user",
+                    as: "post_by",
                     pipeline: [
                         { $project: { password: 0, __v: 0 } }
                     ]
                 }
             }, {
-                $unwind: "$user"
+                $unwind: "$post_by"
             }
         ]).toArray();
         if (items.length === 0) return c.json({ message: "No items found" }, 404);
