@@ -95,7 +95,7 @@ export const getAllItems = async (c: Context) => {
         const items = await collection_item.aggregate([
             {
                 $lookup: {
-                    from: "admin",
+                    from: "admins",
                     localField: "post_by",
                     foreignField: "_id",
                     as: "post_by",
@@ -116,23 +116,27 @@ export const getAllItems = async (c: Context) => {
 
 export const getitemByFilter = async (c: Context) => {
     const { category } = await c.req.json();
-    if (!category) return c.json({ message: "Category is required" }, 400);
-    console.log(category);
+    const parse = ItemSchma.pick({ category: true }).safeParse({ category });
+    if (!parse.success) {
+        const errors = parse.error.flatten().fieldErrors;
+        return c.json({ message: "Validation failed", errors }, 400);
+    }
     try {
         const items = await collection_item.aggregate([
             {
                 $match: { category },
+            }, {
                 $lookup: {
-                    from: "users",
+                    from: "admins",
                     localField: "post_by",
                     foreignField: "_id",
-                    as: "user",
+                    as: "post_by",
                     pipeline: [
                         { $project: { password: 0, __v: 0 } }
                     ]
                 }
             }, {
-                $unwind: "$user"
+                $unwind: "$post_by"
             }
         ]).toArray();
 

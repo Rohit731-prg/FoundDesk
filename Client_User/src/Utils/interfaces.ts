@@ -20,15 +20,31 @@ export interface itemIterface {
     description: string;
     category: string;
     location: string;
-    post_by: string;
     status: string;
     image: string;
     image_public_id: string;
     createdAt: string;
-    user: {
+    post_by: {
         _id: string;
         name: string;
         email: string;
         image: string;
+        phone: String;
     }
+}
+
+export interface claimInterface {
+    item_id: {
+        title: string;
+        status: string;
+        image: string;
+    },
+    proof: string;
+    claim_date: string;
+    status: string
+}
+
+export interface RequestClaimInterface {
+    item_id: string;
+    proof: string;
 }

@@ -9,6 +9,7 @@ import Posts from "./Components/Posts"
 import Post from "./Components/Post"
 import PasswordChange from "./Components/Setting_pages/PasswordChange"
 import Error from "./Components/Error"
+import Claim from "./Components/Claim"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/passwordChange" element={ <ProtectedRoute><PasswordChange/></ProtectedRoute>} />
         <Route path="/products" element={ <ProtectedRoute><Posts/></ProtectedRoute>} />
         <Route path="/product" element={ <ProtectedRoute><Post/></ProtectedRoute>} />
+        <Route path="/claim" element={ <ProtectedRoute><Claim/></ProtectedRoute>} />
       </Routes>
     </Router>
   )

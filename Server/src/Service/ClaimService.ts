@@ -1,33 +1,27 @@
 import { Context } from "hono";
-import { ClaimSchema } from "../Model/ClaimsModel";
 import { collection_claim, collection_item, collection_user } from "../Config/DbConnection";
 import { ObjectId } from "mongodb";
 import { generateUrl } from "../Utils/uploadImage";
 
 export const requestClaim = async (c: Context) => {
+    const fromData = await c.req.formData();
+    const item_id = fromData.get("item_id") as string;
+    const proof = fromData.get("proof") as File | null;
+
+    if (!item_id || !proof) return c.json({ message: "Item ID and proof is required"}, 400);
+    
     try {
-        const fromData = await c.req.formData();
-        const item_id = fromData.get("item_id") as string;
-        const claim_by = fromData.get("claim_by") as string;
-        const proof = fromData.get("proof") as File | null;
-        const claim_date = fromData.get("claim_date") as string;
-
-        const parsed = ClaimSchema.safeParse({ item_id, claim_by, claim_date });
-        if (!parsed.success) {
-            const errors = parsed.error.flatten().fieldErrors;
-            return c.json({ message: "Validation failed", errors }, 400);
-        }
-        if (!proof) return c.json({ message: "Proof is required" }, 400);
-
         const item_exists = await collection_item.findOne({ _id: new ObjectId(item_id) });
         if (!item_exists) return c.json({ message: "Item not found" }, 404);
 
+        const claim_by = c.get("student");
         const user_has_claimed = await collection_user.findOne({ _id: new ObjectId(claim_by) });
         if (!user_has_claimed) return c.json({ message: "User not found" }, 404);
+        if (!user_has_claimed?.auth) return c.json({ message: "User is not f=verified yet" });
 
+        const is_exist = collection_claim.find({ item_id, claim_by});
+        if (is_exist) return c.json({ message: "User already claim for this item! "});
         
-        if (user_has_claimed.role !== 'user') return c.json({ message: "Only users can claim items" }, 403);
-
         const imageDetails = await generateUrl(proof as File);
         const proof_url = (imageDetails as any).url;
         const proof_public_id = (imageDetails as any).public_id;
@@ -37,7 +31,7 @@ export const requestClaim = async (c: Context) => {
             claim_by,
             proof: proof_url,
             proof_public_id: proof_public_id,
-            claim_date,
+            claim_date: new Date(),
             status: 'pending'
         };
 

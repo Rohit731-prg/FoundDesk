@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import UserRouter from "./Route/UserRoute";
 import ItemRouter from "./Route/itemRoute";
 import AdminRouter from "./Route/AdminRoute";
+import ClaimRouter from "./Route/CliamRoute";
 import { cors } from "hono/cors";
 
 const app = new Hono()
@@ -17,12 +18,12 @@ app.use(
 
 
 app.get('/', (c) => {
-  return c.text('Hello Hono!')
+  return c.text('Hello Hono!');
 })
 
 app.route('/api/user', UserRouter);
 app.route('/api/item', ItemRouter);
 app.route('/api/admin', AdminRouter);
-
+app.route('/api/claim', ClaimRouter);
 
 export default app
