@@ -22,7 +22,6 @@ export const adminSlice = createSlice({
         });
 
         const response = await promise;
-
         state.admin = response.data.admin;
         console.log(state.admin);
       } catch (error) {
