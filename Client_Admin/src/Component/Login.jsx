@@ -1,24 +1,33 @@
 import React, { useState } from "react";
 import { Toaster } from "sonner";
-import { login } from "../store/AdminSlice";
 import loginLottie from "../assets/login.json";
 import Lottie from "lottie-react";
 import { IoMdPerson } from "react-icons/io";
 import { IoLockClosedSharp } from "react-icons/io5";
 import { useDispatch } from "react-redux";
+import { loginFunction } from "../store/AdminThunk"; 
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [adminDetails, setAdminDetails] = useState({
     email: "",
     password: "",
   });
 
-  const loginFunction = async (e) => {
+  const loginFunctionCall = async (e) => {
     e.preventDefault();
-    console.log(adminDetails);
-    
-    dispatch(login(adminDetails));
+    try {
+      const result = await dispatch(loginFunction(adminDetails));
+      console.log("Login result:", result);
+      if (result.payload?.admin) {
+        localStorage.setItem("adminToken", "true");
+        navigate("/new-product");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -32,7 +41,7 @@ function Login() {
 
         {/* Right Form */}
         <form
-          onSubmit={loginFunction}
+          onSubmit={loginFunctionCall}
           className="w-full md:w-1/2 bg-white shadow-xl rounded-2xl px-10 py-10 border border-cyan-200"
         >
           <p className="text-center mb-10 text-3xl font-bold text-cyan-700">

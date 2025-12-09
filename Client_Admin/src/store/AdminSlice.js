@@ -15,6 +15,7 @@ export const adminSlice = createSlice({
     builder
            .addCase(loginFunction.fulfilled, (state, action) => {
             state.loading = false;
+            console.log(action.payload.admin);
             state.admin = action.payload.admin;
           })
           .addCase(loginFunction.pending, (state) => {
