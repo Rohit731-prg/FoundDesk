@@ -23,7 +23,9 @@ function Login() {
       console.log("Login result:", result);
       if (result.payload?.admin) {
         localStorage.setItem("adminToken", "true");
-        navigate("/new-product");
+        setTimeout(() => {
+          navigate("/new-product");
+        }, 1000);
       }
     } catch (error) {
       console.error("Login failed:", error);

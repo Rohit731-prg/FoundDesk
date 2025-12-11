@@ -2,17 +2,24 @@ import { useEffect, useState } from "react";
 import { itemCategory } from "../Utils/Elements";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../store/ProductThunk.js";
+import { getAllProducts, postNewProduct } from "../store/ProductThunk.js";
 import { Toaster } from "sonner";
 
 function NewProduct() {
   const dispatch = useDispatch();
 
-  const products = useSelector((state) => state.products);
-  console.log(products);
+  const products = useSelector((state) => state.product.products);
+  const [productDetails, setProductDetails] = useState({
+    title: "",
+    description: "",
+    category: "",
+    location: "",
+    image: null,
+  })
   
   const [imageURL, setImageUrl] = useState(null);
   const convertToStrng = (file) => {
+    setProductDetails({ ...productDetails, image: file });
     const url = URL.createObjectURL(file);
     setImageUrl(url);
   };
@@ -20,7 +27,13 @@ function NewProduct() {
   const fetchProducts = async () => {
     dispatch(getAllProducts());
   };
+
+  const handelSubmit = (e) => {
+    e.preventDefault();
+    dispatch(postNewProduct(productDetails));
+  }
   useEffect(() => {
+    console.log("token value: ", localStorage.getItem("adminToken"));
     fetchProducts();
   }, []);
 
@@ -35,11 +48,13 @@ function NewProduct() {
 
           {/* ADD PRODUCT FORM */}
           <section className="bg-gray-200 p-5 rounded-md shadow-xl w-full lg:w-1/2">
-            <form className="flex flex-col" action="">
+            <form className="flex flex-col" onSubmit={handelSubmit}>
 
               <label htmlFor="title" className="mb-1 text-xl font-medium">Title</label>
               <input
                 id="title"
+                value={productDetails?.title}
+                onChange={(e) => setProductDetails({ ...productDetails, title: e.target.value })}
                 type="text"
                 className="w-full bg-white py-2 px-5 rounded-md outline-none"
                 placeholder="Enter Product Name"
@@ -50,6 +65,8 @@ function NewProduct() {
               </label>
               <textarea
                 id="description"
+                value={productDetails?.description}
+                onChange={(e) => setProductDetails({ ...productDetails, description: e.target.value })}
                 placeholder="Enter Product Description"
                 rows={4}
                 className="bg-white outline-none rounded-md p-3"
@@ -60,6 +77,8 @@ function NewProduct() {
               </label>
               <select
                 id="category"
+                value={productDetails?.category}
+                onChange={(e) => setProductDetails({ ...productDetails, category: e.target.value })}
                 className="p-2 rounded-md outline-none bg-white w-1/2"
               >
                 <option value="">Select Category</option>
@@ -75,6 +94,8 @@ function NewProduct() {
               </label>
               <textarea
                 id="location"
+                value={productDetails?.location}
+                onChange={(e) => setProductDetails({ ...productDetails, location: e.target.value })}
                 placeholder="Enter the location where the product found"
                 className="bg-white outline-none rounded-md p-3"
               ></textarea>

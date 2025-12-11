@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProducts } from "./ProductThunk";
+import { getAllProducts, postNewProduct } from "./ProductThunk";
 
 const initialState = {
     loading: true,
@@ -27,6 +27,17 @@ export const productSlice = createSlice({
                 state.loading = false;
                 state.products = [];
             })
+
+            .addCase(postNewProduct.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(postNewProduct.fulfilled, (state) => {
+                
+                state.loading = false;
+            })
+            .addCase(postNewProduct.rejected, (state) => {
+                state.loading = false;
+            });
     }
 });
 

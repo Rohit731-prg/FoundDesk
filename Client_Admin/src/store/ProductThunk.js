@@ -10,7 +10,7 @@ export const getAllProducts = createAsyncThunk(
 
             toast.promise(promise, {
                 loading: "Loading...",
-                success: (res) => res.data.message,
+                success: (res) => "Products fetched successfully",
                 error: (err) => err?.response?.data?.message || "Login failed",
             });
 
@@ -27,7 +27,7 @@ export const postNewProduct = createAsyncThunk(
     "item/createItem",
     async (data, { rejectWithValue }) => {
         try {
-            const promise = axiosInstance.post("/admin/login", data);
+            const promise = axiosInstance.post("/item/createItem", data);
 
             toast.promise(promise, {
                 loading: "Loading...",

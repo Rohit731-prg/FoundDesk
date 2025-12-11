@@ -10,7 +10,7 @@ export const loginFunction = createAsyncThunk(
 
             toast.promise(promise, {
                 loading: "Loading...",
-                success: (res) => res.data.message,
+                success: (res) => "Login successful",
                 error: (err) => err?.response?.data?.message || "Login failed",
             });
 
