@@ -13,3 +13,4 @@ export const collection_user = db.collection("users");
 export const collection_item = db.collection("items");
 export const collection_claim = db.collection("claims");
 export const collection_Admin = db.collection("admins");
+export const collection_question = db.collection("questions");

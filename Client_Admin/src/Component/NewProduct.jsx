@@ -191,7 +191,7 @@ function NewProduct() {
                         <td className="py-2 px-4">{product.title}</td>
                         <td className="py-2 px-4">{product.category}</td>
                         <td className="py-2 px-4">{product.status}</td>
-                        <td className="py-2 px-4">{product.createdAt}</td>
+                        <td className="py-2 px-4">{product.createdAt.split("T")[0]}</td>
                       </tr>
                     ))
                   ) : (

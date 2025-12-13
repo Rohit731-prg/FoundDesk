@@ -1,8 +1,13 @@
+import Sidebar from "./Sidebar"
 
 function Products() {
   return (
-    <div>
+    <div className="flex flex-row">
+      <Sidebar />
+
+      <main>
         
+      </main>
     </div>
   )
 }

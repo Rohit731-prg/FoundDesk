@@ -48,3 +48,11 @@ export interface RequestClaimInterface {
     item_id: string;
     proof: string;
 }
+
+
+export interface QuestionInterface {
+    question: string;
+    answer: string | null;
+    admin: string | null;
+    createdAt: string;
+}

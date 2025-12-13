@@ -10,6 +10,7 @@ import Post from "./Components/Post"
 import PasswordChange from "./Components/Setting_pages/PasswordChange"
 import Error from "./Components/Error"
 import Claim from "./Components/Claim"
+import Questions from "./Components/Setting_pages/Questions"
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/products" element={ <ProtectedRoute><Posts/></ProtectedRoute>} />
         <Route path="/product" element={ <ProtectedRoute><Post/></ProtectedRoute>} />
         <Route path="/claim" element={ <ProtectedRoute><Claim/></ProtectedRoute>} />
+        <Route path="/questions" element={ <ProtectedRoute><Questions/></ProtectedRoute>} />
       </Routes>
     </Router>
   )
