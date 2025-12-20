@@ -51,6 +51,7 @@ export interface RequestClaimInterface {
 
 
 export interface QuestionInterface {
+    _id: string;
     question: string;
     answer: string | null;
     admin: string | null;

@@ -1,8 +1,10 @@
 import { Hono } from "hono";
-import { getAllQuestionByStudent } from "../Service/QuestionService";
+import { askQuestion, getAllQuestionByStudent } from "../Service/QuestionService";
+import { verifyMiddleware } from "../Middleware/verify";
 
 const router = new Hono();
 
 router.get("/getAllQuestions/:id", getAllQuestionByStudent);
+router.post("/askQuestion", verifyMiddleware, askQuestion);
 
 export default router;

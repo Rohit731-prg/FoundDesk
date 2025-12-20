@@ -2,9 +2,9 @@ import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 export const QuestionSchema = z.object({
-    student: ObjectId,
-    admin: ObjectId || null,
+    student: z.string(),
+    admin: z.string().nullable(),
     question: z.string(),
-    answer: z.string() || null,
+    answer: z.string().nullable(),
     createdAt: z.date().default(new Date()),
 });

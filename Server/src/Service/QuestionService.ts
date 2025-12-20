@@ -9,18 +9,20 @@ export const askQuestion = async (c: Context) => {
     if (!question) return c.json({ message: "Question is required" }, 400);
 
     try {
+        const id = student?._id;
+        console.log(id);
         const newQuestion = {
-            student: student?._id,
+            student: id,
             admin: null,
             question,
             answer: null,
             createdAt: new Date(),
         };
-        const parse = QuestionSchema.safeParse(newQuestion);
-        if (!parse.success) {
-            const errors = parse.error.flatten().fieldErrors;
-            return c.json({ message: "Validation failed", errors }, 400);
-        }
+        // const parse = QuestionSchema.safeParse(newQuestion);
+        // if (!parse.success) {
+        //     const errors = parse.error.flatten().fieldErrors;
+        //     return c.json({ message: "Validation failed", errors }, 400);
+        // }
 
         await collection_question.insertOne(newQuestion);
 
@@ -54,7 +56,7 @@ export const getAllQuestionByStudent = async (c: Context) => {
     if (!id) return c.json({ message: "Student ID is required" }, 400);
     
     try {
-        const questions = await collection_question.find({ student: new ObjectId(id) }).toArray();
+        const questions = await collection_question.find({ student: new ObjectId(id) }).sort({ createdAt: -1 }).toArray();
         if (!questions) return c.json({ message: "No questions found" }, 404);
         return c.json(questions, 200);
     } catch (error) {
