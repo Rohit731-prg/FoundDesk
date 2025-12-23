@@ -1,7 +1,7 @@
 import { MiddlewareHandler } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from 'hono/jwt'
-import { collection_user } from "../Config/DbConnection";
+import { collection_Admin, collection_user } from "../Config/DbConnection";
 import { ObjectId } from "mongodb";
 
 export const verifyMiddleware: MiddlewareHandler = async (c, next) => {
@@ -19,14 +19,13 @@ export const verifyMiddleware: MiddlewareHandler = async (c, next) => {
             if (!student.auth) return c.json({ message: "Student is not authenticated" }, 401);
             c.set("student", student);
         } else if (docode.role === "admin") {
-            const admin = await collection_user.findOne({ _id: new ObjectId(docode.id as string) });
+            const admin = await collection_Admin.findOne({ _id: new ObjectId(docode.id as string) });
             if (!admin) return c.json({ message: "Admin not found" }, 401);
             if (!admin.auth) return c.json({ message: "Admin is not authenticated" }, 401);
             c.set("admin", admin);
         } else {
-            const staff = await collection_user.findOne({ _id: new ObjectId(docode.id as string) });
+            const staff = await collection_Admin.findOne({ _id: new ObjectId(docode.id as string) });
             if (!staff) return c.json({ message: "Staff not found" }, 401);
-            if (!staff.auth) return c.json({ message: "Staff is not authenticated" }, 401);
             c.set("staff", staff);
         }
 

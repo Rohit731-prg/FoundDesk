@@ -11,7 +11,7 @@ export const getAllProducts = createAsyncThunk(
             toast.promise(promise, {
                 loading: "Loading...",
                 success: (res) => "Products fetched successfully",
-                error: (err) => err?.response?.data?.message || "Login failed",
+                error: (err) => err?.response?.data?.message || "import failed",
             });
 
             const res = await promise;
