@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProducts, postNewProduct } from "./ProductThunk";
+import { deleteProduct, getAllProducts, postNewProduct, updateProductStatus } from "./ProductThunk";
 
 const initialState = {
     loading: true,
@@ -32,10 +32,30 @@ export const productSlice = createSlice({
                 state.loading = true;
             })
             .addCase(postNewProduct.fulfilled, (state) => {
-                
+
                 state.loading = false;
             })
             .addCase(postNewProduct.rejected, (state) => {
+                state.loading = false;
+            })
+
+            .addCase(deleteProduct.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(deleteProduct.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(deleteProduct.rejected, (state) => {
+                state.loading = false;
+            })
+
+            .addCase(updateProductStatus.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(updateProductStatus.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(updateProductStatus.rejected, (state) => {
                 state.loading = false;
             });
     }

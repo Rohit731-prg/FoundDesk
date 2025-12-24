@@ -21,15 +21,17 @@ export const generateUrl = async (file: File): Promise<object> => {
 
         return { url, public_id };
     } catch (error: any) {
-        throw new Error(error.message);
+        console.log(error);
+        return new Error(error.message);
     }
 }
 
-export const deleteImage = async (public_id: string): Promise<object> => {
+export const deleteImage = async (public_id: string) => {
     try {
         const result = await cloudinary.uploader.destroy(public_id);
         return result;
     } catch (error: any) {
-        return new Error(error.message);
+        console.log(error);
+        return false;
     }
 }

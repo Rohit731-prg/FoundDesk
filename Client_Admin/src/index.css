@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@utility table-contents {
+    @apply px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider
+}
+
+@utility btn {
+    @apply  text-white p-2 rounded-full hover:shadow-md  focus:outline-none focus:ring  cursor-pointer transition
+}

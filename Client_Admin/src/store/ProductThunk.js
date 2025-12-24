@@ -25,20 +25,74 @@ export const getAllProducts = createAsyncThunk(
 
 export const postNewProduct = createAsyncThunk(
     "item/createItem",
-    async (data, { rejectWithValue }) => {
+    async (data, { dispatch }) => {
         try {
-            const promise = axiosInstance.post("/item/createItem", data);
+            const newForm = new FormData();
+            newForm.append("title", data.title);
+            newForm.append("description", data.description);
+            newForm.append("category", data.category);
+            newForm.append("location", data.location);
+            newForm.append("image", data.image);
+            console.log(data.title);
+            const promise = axiosInstance.post("/item/createItem", newForm, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
             toast.promise(promise, {
                 loading: "Loading...",
                 success: (res) => res.data.message,
-                error: (err) => err?.response?.data?.message || "Login failed",
+                error: (err) => err?.response?.data?.message || "create failed",
             });
 
-            const res = await promise;
-            return res.data;
+            await promise;
+            dispatch(getAllProducts());
+            return true;
         } catch (error) {
             console.log(error);
         }
     }
 );
+
+export const deleteProduct = createAsyncThunk(
+    "item/deleteItem",
+    async (id, { dispatch }) => {
+        try {
+            const promise = axiosInstance.delete(`/item/deleteItem/${id}`);
+
+            toast.promise(promise, {
+                loading: "Loading...",
+                success: (res) => res.data.message,
+                error: (err) => err?.response?.data?.message || "delete failed",
+            });
+
+            await promise;
+            dispatch(getAllProducts());
+            return true;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+);
+
+export const updateProductStatus = createAsyncThunk(
+    "item/updateItem",
+    async (data, { dispatch }) => {
+        try {
+            const promise = axiosInstance.put(`/item/updateItem/${data.id}`, data);
+
+            toast.promise(promise, {
+                loading: "Loading...",
+                success: (res) => res.data.message,
+                error: (err) => err?.response?.data?.message || "update failed",
+            });
+
+            await promise;
+            dispatch(getAllProducts());
+            return true;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+)
