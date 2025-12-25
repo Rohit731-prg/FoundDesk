@@ -8,27 +8,28 @@ export const requestClaim = async (c: Context) => {
     const item_id = fromData.get("item_id") as string;
     const proof = fromData.get("proof") as File | null;
 
-    if (!item_id || !proof) return c.json({ message: "Item ID and proof is required"}, 400);
-    
+    if (!item_id || !proof) return c.json({ message: "Item ID and proof is required" }, 400);
+
     try {
         const item_exists = await collection_item.findOne({ _id: new ObjectId(item_id) });
         if (!item_exists) return c.json({ message: "Item not found" }, 404);
 
         const claim_by = c.get("student");
-        const user_has_claimed = await collection_user.findOne({ _id: new ObjectId(claim_by) });
+        const user_has_claimed = await collection_user.findOne({ _id: new ObjectId(claim_by._id) });
         if (!user_has_claimed) return c.json({ message: "User not found" }, 404);
-        if (!user_has_claimed?.auth) return c.json({ message: "User is not f=verified yet" });
+        if (!user_has_claimed?.auth) return c.json({ message: "User is not verified yet" });
 
-        const is_exist = collection_claim.find({ item_id, claim_by});
-        if (is_exist) return c.json({ message: "User already claim for this item! "});
-        
+        const is_exist = await collection_claim.findOne({ item_id, claim_by });
+        console.log(is_exist);
+        if (is_exist) return c.json({ message: "User already claim for this item! " });
+
         const imageDetails = await generateUrl(proof as File);
         const proof_url = (imageDetails as any).url;
         const proof_public_id = (imageDetails as any).public_id;
 
         const newClaim = {
-            item_id,
-            claim_by,
+            item_id: new ObjectId(item_id),
+            claim_by: new ObjectId(claim_by._id),
             proof: proof_url,
             proof_public_id: proof_public_id,
             claim_date: new Date(),
@@ -56,6 +57,39 @@ export const updateClaimStatus = async (c: Context) => {
 
         await collection_claim.updateOne({ _id: new ObjectId(id) }, { $set: { status } });
         return c.json({ message: `Claim status updated to ${status}` }, 200);
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
+    }
+}
+
+export const getAllClaims = async (c: Context) => {
+    const student = c.get("student");
+    try {
+        const claims = await collection_claim.aggregate([
+            {
+                $match: {
+                    claim_by: student._id, // ✅ same as find()
+                },
+            },
+            {
+                $lookup: {
+                    from: "items", // ✅ collection you want to join
+                    localField: "item_id",
+                    foreignField: "_id",
+                    as: "item",
+                    pipeline: [
+                        { $project: { password: 0, __v: 0 } },
+                    ],
+                },
+            },
+            {
+                $unwind: "$item", // ✅ convert array → object
+            },
+        ]).toArray();
+        console.log(claims)
+        if (!claims) return c.json({ message: "No data found " }, 400);
+
+        return c.json({ claims });
     } catch (error) {
         return c.json({ message: (error as Error).message }, 500);
     }

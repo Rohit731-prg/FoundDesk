@@ -34,7 +34,7 @@ export interface itemIterface {
 }
 
 export interface claimInterface {
-    item_id: {
+    item: {
         title: string;
         status: string;
         image: string;
@@ -46,7 +46,7 @@ export interface claimInterface {
 
 export interface RequestClaimInterface {
     item_id: string;
-    proof: string;
+    proof: File | null;
 }
 
 

@@ -1,11 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import Sidebar from "./Sidebar"
+import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
-import { getAllProducts, deleteProduct, updateProductStatus } from "../store/ProductThunk";
+import {
+  getAllProducts,
+  deleteProduct,
+  updateProductStatus,
+} from "../store/ProductThunk";
 import { FaFilePen } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 function Products() {
   const dispatch = useDispatch();
@@ -24,7 +28,7 @@ function Products() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, delete it!",
     });
     if (result.isConfirmed) {
       console.log("delete id", id);
@@ -36,17 +40,25 @@ function Products() {
     const { value: formValues } = await Swal.fire({
       title: "Update Product",
       html: `
-      <input id="swal-title" class="swal2-input" placeholder="Title" value="${product.title}" />
+      <input id="swal-title" class="swal2-input" placeholder="Title" value="${
+        product.title
+      }" />
       
       <textarea id="swal-description" class="swal2-textarea" placeholder="Description">
 ${product.description}
       </textarea>
 
-      <input id="swal-location" class="swal2-input" placeholder="Location" value="${product.location}" />
+      <input id="swal-location" class="swal2-input" placeholder="Location" value="${
+        product.location
+      }" />
 
       <select id="swal-status" class="swal2-select">
-        <option value="open" ${product.status === "open" ? "selected" : ""}>Open</option>
-        <option value="closed" ${product.status === "closed" ? "selected" : ""}>Closed</option>
+        <option value="open" ${
+          product.status === "open" ? "selected" : ""
+        }>Open</option>
+        <option value="closed" ${
+          product.status === "closed" ? "selected" : ""
+        }>Closed</option>
       </select>
     `,
       showCancelButton: true,
@@ -69,7 +81,6 @@ ${product.description}
     }
   };
 
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -77,65 +88,76 @@ ${product.description}
     <div className="flex flex-row">
       <Sidebar />
 
-      <main className="p-10 w-full">
+      <main className="p-8 w-full">
         <h1 className="text-3xl font-bold mb-6">View all products</h1>
-        <div className="overflow-x">
-          <table className="w-full">
-            <thead>
+
+        <div className="overflow-x-auto rounded-lg border border-gray-200">
+          <table className="w-full text-sm text-left text-gray-600">
+            <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
               <tr>
-                <th className="table-content">
-                  Image
-                </th>
-                <th className="table-content">
-                  Title
-                </th>
-                <th className="table-content">
-                  Description
-                </th>
-                <th className="table-content">
-                  Category
-                </th>
-                <th className="table-content">
-                  Location
-                </th>
-                <th className="table-content">
-                  Status
-                </th>
-                <th className="table-content">
-                  Publish Date
-                </th>
-                <th className="table-content">
-                  Actions
-                </th>
+                <th className="table-content">Image</th>
+                <th className="table-content">Title</th>
+                <th className="table-content">Description</th>
+                <th className="table-content">Category</th>
+                <th className="table-content">Location</th>
+                <th className="table-content">Status</th>
+                <th className="table-content">Publish Date</th>
+                <th className="table-content text-center">Actions</th>
               </tr>
             </thead>
-            <tbody>
-              {products && products.map((item) => (
-                <tr key={item._id} className="border-b border-gray-200">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <img src={item.image} alt="" className="w-10 h-10 object-cover rounded-full" />
+
+            <tbody className="divide-y divide-gray-200 bg-white">
+              {products?.map((item) => (
+                <tr key={item._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-10 h-10 rounded-full object-cover border"
+                    />
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+
+                  <td className="px-6 py-4 font-medium text-gray-900">
                     {item.title}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+
+                  <td className="px-6 py-4 max-w-xs truncate">
                     {item.description}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.category}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.location}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.status}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.createdAt.split("T")[0]}
-                  </td>
+
+                  <td className="px-6 py-4">{item.category}</td>
+
+                  <td className="px-6 py-4">{item.location}</td>
+
                   <td className="px-6 py-4">
-                    <button className="btn mr-2 bg-blue-400" onClick={() => updateProduct(item)}><FaFilePen /></button>
-                    <button className="btn bg-red-500" onClick={() => deleteData(item._id)}><MdDelete /></button>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold
+                ${
+                  item.status === "active"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+                    >
+                      {item.status}
+                    </span>
+                  </td>
+
+                  <td className="px-6 py-4">{item.createdAt.split("T")[0]}</td>
+
+                  <td className="px-6 py-4 flex justify-center gap-2">
+                    <button
+                      className="btn bg-blue-500"
+                      onClick={() => updateProduct(item)}
+                    >
+                      <FaFilePen />
+                    </button>
+
+                    <button
+                      className="btn bg-red-500"
+                      onClick={() => deleteData(item._id)}
+                    >
+                      <MdDelete />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -143,9 +165,10 @@ ${product.description}
           </table>
         </div>
       </main>
+
       <Toaster />
     </div>
-  )
+  );
 }
 
-export default Products
+export default Products;
