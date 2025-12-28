@@ -6,7 +6,6 @@ import { setCookie } from "hono/cookie";
 import { UserSchema } from "../Model/UserModel";
 import { generateUrl } from "../Utils/uploadImage";
 import { ObjectId } from "mongodb";
-import { password } from "bun";
 
 export const signUp = async (c: Context) => {
     const formData = await c.req.formData();
