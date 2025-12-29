@@ -16,7 +16,7 @@ function Home() {
       <Navbar />
 
       <main>
-        <p className="text-lg font-medium">Welcaome Back {user?.name}</p>
+        <p className="text-lg font-medium">Welcome Back {user?.name}</p>
         {claims ? (
           claims == undefined ? (
             <div>
