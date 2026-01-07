@@ -5,7 +5,7 @@ const initialState = {
     loading: false,
     students: [],
     studentDetails: null,
-    questions: [],
+    questions: null,
     question: null
 }
 

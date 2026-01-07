@@ -41,7 +41,8 @@ export interface claimInterface {
     },
     proof: string;
     claim_date: string;
-    status: string
+    status: string;
+    _id: string;
 }
 
 export interface RequestClaimInterface {
