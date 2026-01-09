@@ -5,6 +5,7 @@ import Products from "./Component/Products"
 import Dashboard from "./Component/Dashboard"
 import NewProduct from "./Component/NewProduct"
 import Question from "./Component/Question"
+import Claims from "./Component/Claims"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<ProtuctedRoute><Dashboard /></ProtuctedRoute>} />
         <Route path="/new-product" element={<ProtuctedRoute><NewProduct /></ProtuctedRoute>} />
         <Route path="/questions" element={<ProtuctedRoute><Question /></ProtuctedRoute>} />
+        <Route path="/claims" element={<ProtuctedRoute><Claims /></ProtuctedRoute>} />
       </Routes>
     </Router>
   )

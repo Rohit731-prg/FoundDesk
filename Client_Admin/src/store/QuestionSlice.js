@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllStudents, getQuestionsByStudentID } from "./QuestionThunk";
+import { getAllStudents, getQuestionsByStudentID, replyQuestion } from "./QuestionThunk";
 
 const initialState = {
     loading: false,
@@ -45,6 +45,13 @@ export const questionReducer = createSlice({
             .addCase(getQuestionsByStudentID.rejected, (state, action) => {
                 //
             })
+
+            .addCase(replyQuestion.pending, (state, action) => {})
+            .addCase(replyQuestion.fulfilled, (state, action) => {
+                console.log("Slice: ", action.payload)
+                state.question = {...state.question, answer: action.payload};
+            })
+            .addCase(replyQuestion.rejected, (state, action) => {})
     }
 });
 

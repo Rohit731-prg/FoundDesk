@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllStudents,
   getQuestionsByStudentID,
+  replyQuestion,
 } from "../store/QuestionThunk";
 import { setQuestion, setStudent } from "../store/QuestionSlice";
 import { FaPen } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
+import { Toaster } from "sonner";
 
 function Question() {
+  const [reply, setReply] = useState("");
   const dispatch = useDispatch();
   const students = useSelector((state) => state.question.students);
   const questions = useSelector((state) => state.question.questions);
@@ -26,6 +29,10 @@ function Question() {
     dispatch(setStudent(student.student));
     dispatch(getQuestionsByStudentID(student.student?._id));
   };
+
+  const setReplyHandler = async (id) => {
+    dispatch(replyQuestion({ question: id, reply: reply }));
+  }
 
   useEffect(() => {
     fetchData();
@@ -152,15 +159,28 @@ function Question() {
                   <p className="text-sm text-gray-700 mb-6">
                     {questionDetails.question}
                   </p>
+                  
+                  {questionDetails.answer && (
+                    <>
+                      <p className="text-sm font-medium text-gray-800 mb-4">
+                        Answer
+                      </p>
+                      <p className="text-sm text-gray-700 mb-6">
+                        {questionDetails.answer}
+                      </p>
+                    </>
+                  )}
 
                   <div className="flex items-center gap-3">
                     <FaPen className="text-gray-500" />
                     <input
                       type="text"
+                      value={reply}
+                      onChange={(e) => setReply(e.target.value)}
                       placeholder="Write your answer here..."
                       className="flex-1 px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <button className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    <button onClick={() => setReplyHandler(questionDetails._id)} className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                       <IoMdSend />
                     </button>
                   </div>
@@ -174,6 +194,7 @@ function Question() {
           </section>
         </main>
       </aside>
+      <Toaster />
     </div>
   );
 }

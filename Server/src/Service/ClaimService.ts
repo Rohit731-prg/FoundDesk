@@ -68,12 +68,19 @@ export const getAllClaims = async (c: Context) => {
         const claims = await collection_claim.aggregate([
             {
                 $match: {
-                    claim_by: student._id, // ✅ same as find()
+                    claim_by: student._id,
                 },
             },
+
+            // ✅ 1. Sort recent first
+            {
+                $sort: { claim_date: -1 },
+            },
+
+            // ✅ 2. Lookup item details
             {
                 $lookup: {
-                    from: "items", // ✅ collection you want to join
+                    from: "items",
                     localField: "item_id",
                     foreignField: "_id",
                     as: "item",
@@ -83,9 +90,26 @@ export const getAllClaims = async (c: Context) => {
                 },
             },
             {
-                $unwind: "$item", // ✅ convert array → object
+                $unwind: "$item",
+            },
+
+            // ✅ 3. Lookup student details
+            {
+                $lookup: {
+                    from: "students",
+                    localField: "claim_by",
+                    foreignField: "_id",
+                    as: "student",
+                    pipeline: [
+                        { $project: { password: 0, __v: 0 } },
+                    ],
+                },
+            },
+            {
+                $unwind: "$student",
             },
         ]).toArray();
+
         console.log(claims)
         if (!claims) return c.json({ message: "No data found " }, 400);
 

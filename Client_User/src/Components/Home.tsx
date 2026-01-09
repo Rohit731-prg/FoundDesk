@@ -15,7 +15,7 @@ function Home() {
     <div className="min-h-screen bg-gray-50 p-5">
       <Navbar />
 
-      <main className="max-w-5xl mx-auto mt-6 space-y-8">
+      <main className="max-w-5xl mx-auto mt-6 space-y-8 pb-5">
         {/* Welcome */}
         <div>
           <p className="text-lg font-semibold text-gray-800">

@@ -37,7 +37,7 @@ export const QuestionReply = async (c: Context) => {
         if (!question) return c.json({ message: "Question not found" }, 404);
 
         await collection_question.updateOne({ _id: new ObjectId(id) }, { $set: { admin: admin?._id, answer } });
-        return c.json({ message: "Question replied successfully" }, 200);
+        return c.json({ message: "Question replied successfully", answer }, 200);
     } catch (error) {
         return c.json({ message: (error as Error).message }, 500);
     }
