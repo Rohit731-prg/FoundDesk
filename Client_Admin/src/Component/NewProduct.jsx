@@ -42,7 +42,8 @@ function NewProduct() {
       <Sidebar />
 
       <div className="p-10 w-full">
-        <h1 className="text-3xl font-bold mb-6">Add New Product</h1>
+        <h1 className="text-3xl font-medium ">Add New Product</h1>
+        <p className="text-gray-500">Fill in the details to add a new product.</p>
 
         <div className="mt-10 flex flex-col lg:flex-row gap-10">
 

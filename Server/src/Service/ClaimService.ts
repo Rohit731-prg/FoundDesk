@@ -49,6 +49,7 @@ export const updateClaimStatus = async (c: Context) => {
     if (!status) return c.json({ message: "Status is required" }, 400);
 
     try {
+        console.log(id);
         const claim = await collection_claim.findOne({ _id: new ObjectId(id) });
         if (!claim) return c.json({ message: "Claim not found" }, 404);
 
@@ -56,28 +57,25 @@ export const updateClaimStatus = async (c: Context) => {
         if (claim.status === status) return c.json({ message: `Claim is already ${status}` }, 400);
 
         await collection_claim.updateOne({ _id: new ObjectId(id) }, { $set: { status } });
+        await collection_item.updateOne({ _id: claim.item_id }, { $set: { status: "claimed" }});
         return c.json({ message: `Claim status updated to ${status}` }, 200);
     } catch (error) {
         return c.json({ message: (error as Error).message }, 500);
     }
 }
 
-export const getAllClaims = async (c: Context) => {
+export const getAllClaimsByStudent = async (c: Context) => {
     const student = c.get("student");
     try {
         const claims = await collection_claim.aggregate([
             {
                 $match: {
-                    claim_by: student._id,
+                    claim_by: student._id
                 },
             },
-
-            // ✅ 1. Sort recent first
             {
                 $sort: { claim_date: -1 },
             },
-
-            // ✅ 2. Lookup item details
             {
                 $lookup: {
                     from: "items",
@@ -85,35 +83,70 @@ export const getAllClaims = async (c: Context) => {
                     foreignField: "_id",
                     as: "item",
                     pipeline: [
-                        { $project: { password: 0, __v: 0 } },
+                        { $project: { __v: 0 } },
                     ],
                 },
             },
             {
                 $unwind: "$item",
             },
+        ]).toArray();
+        if (!claims) return c.json({ message: "No data found " }, 400);
 
-            // ✅ 3. Lookup student details
+        return c.json({ claims });
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
+    }
+}
+
+export const getAllClaims = async (c: Context) => {
+    try {
+        const claims = await collection_claim.aggregate([
+            {
+                $sort: { claim_date: -1 },
+            },
             {
                 $lookup: {
-                    from: "students",
+                    from: "items",
+                    localField: "item_id",
+                    foreignField: "_id",
+                    as: "item",
+                    pipeline: [
+                        { $project: { __v: 0 } },
+                    ],
+                }
+            },
+            {
+                $unwind: "$item",
+            },
+            {
+                $lookup: {
+                    from: "users",
                     localField: "claim_by",
                     foreignField: "_id",
                     as: "student",
                     pipeline: [
-                        { $project: { password: 0, __v: 0 } },
+                        { $project: { password: 0, __v: 0, auth: 0 } },
                     ],
-                },
+                }
             },
             {
-                $unwind: "$student",
-            },
+                $unwind: "$student"
+            }
         ]).toArray();
-
-        console.log(claims)
         if (!claims) return c.json({ message: "No data found " }, 400);
-
         return c.json({ claims });
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
+    }
+}
+
+export const deleteClaim = async (c: Context) => {
+    const { id } = c.req.param();
+    try {
+        const result = await collection_claim.deleteOne({ _id: new ObjectId(id) });
+        if (result.deletedCount === 0) return c.json({ message: "Claim not found" }, 404);
+        return c.json({ message: "Claim deleted successfully" }, 200);
     } catch (error) {
         return c.json({ message: (error as Error).message }, 500);
     }

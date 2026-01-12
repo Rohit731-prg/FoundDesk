@@ -31,7 +31,8 @@ function Question() {
   };
 
   const setReplyHandler = async (id) => {
-    dispatch(replyQuestion({ question: id, reply: reply }));
+    dispatch(replyQuestion({ question: id, reply: reply, student: studentDetails?._id }));
+    setReply("");
   }
 
   useEffect(() => {

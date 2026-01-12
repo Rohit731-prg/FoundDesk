@@ -13,8 +13,9 @@ export const sideBarAdmin = [
     { id: 2, name: "New Product", link: "/new-product", icon: MdDashboard },
     { id: 3, name: "Existing Product", link: "/products", icon: MdDashboard },
     { id: 4, name: "Staff Management", link: "/staff-management", icon: MdDashboard },
-    { id: 5, name: "Question Section", link: "/questions", icon: MdDashboard },
-    { id: 6, name: "Claims Section", link: "/claims", icon: MdDashboard },
+    { id: 5, name: "Student Management", link: "/student-management", icon: MdDashboard },
+    { id: 6, name: "Question Section", link: "/questions", icon: MdDashboard },
+    { id: 7, name: "Claims Section", link: "/claims", icon: MdDashboard },
 ]
 
 export const itemCategory = [

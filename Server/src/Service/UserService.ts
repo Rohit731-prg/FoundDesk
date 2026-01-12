@@ -133,3 +133,13 @@ export const updatePassword = async (c: Context) => {
         return c.json({ message: error.message as string });
     }
 }
+
+export const getAllStudents = async (c: Context) => {
+    try {
+        const students = await collection_user.find().toArray();
+        if (!students) return c.json({ message: "No students found" }, 404);
+        return c.json({ students }, 200);
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
+    }
+}

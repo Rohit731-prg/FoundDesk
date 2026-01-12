@@ -1,11 +1,11 @@
-import Sidebar from "./Sidebar"
+import Sidebar from "./Sidebar";
 
 function Dashboard() {
   return (
-    <div>
+    <div className="flex flex-row">
       <Sidebar />
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

@@ -13,6 +13,7 @@ type Store = {
 const useClaimStore = create<Store>()((set) => ({
   claim: null,
   claims: null,
+
   requestClaim: async (request: RequestClaimInterface) => {
     console.log("function is called")
     if (request.proof == null) {
@@ -47,7 +48,7 @@ const useClaimStore = create<Store>()((set) => ({
 
   getAllClaim: async () => {
     try {
-      const response = await axiosIntance.get("claim/getAllClaims");
+      const response = await axiosIntance.get("claim/getAllClaimsByStudent");
       console.log(response.data.claims)
       set({ claims: response.data.claims });
     } catch (error) {

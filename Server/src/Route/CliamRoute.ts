@@ -1,11 +1,13 @@
 import { Hono } from "hono";
 import { verifyMiddleware } from "../Middleware/verify";
-import { getAllClaims, requestClaim, updateClaimStatus } from "../Service/ClaimService";
+import { deleteClaim, getAllClaims, getAllClaimsByStudent, requestClaim, updateClaimStatus } from "../Service/ClaimService";
 
 const router = new Hono();
 
 router.post("/claimItem", verifyMiddleware, requestClaim);
-router.put("/changeStatus", verifyMiddleware, updateClaimStatus);
+router.put("/changeStatus/:id", verifyMiddleware, updateClaimStatus);
+router.get("/getAllClaimsByStudent", verifyMiddleware, getAllClaimsByStudent);
 router.get("/getAllClaims", verifyMiddleware, getAllClaims);
+router.delete("/deleteClaim/:id", verifyMiddleware, deleteClaim);
 
 export default router;

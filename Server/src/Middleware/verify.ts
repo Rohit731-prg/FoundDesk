@@ -21,7 +21,6 @@ export const verifyMiddleware: MiddlewareHandler = async (c, next) => {
         } else if (docode.role === "admin") {
             const admin = await collection_Admin.findOne({ _id: new ObjectId(docode.id as string) });
             if (!admin) return c.json({ message: "Admin not found" }, 401);
-            if (!admin.auth) return c.json({ message: "Admin is not authenticated" }, 401);
             c.set("admin", admin);
         } else {
             const staff = await collection_Admin.findOne({ _id: new ObjectId(docode.id as string) });

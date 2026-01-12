@@ -10,6 +10,7 @@ import {
 import { FaFilePen } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
+import { CiSearch } from "react-icons/ci";
 
 function Products() {
   const dispatch = useDispatch();
@@ -90,7 +91,26 @@ ${product.description}
 
       <main className="p-8 w-full">
         <h1 className="text-3xl font-bold mb-6">View all products</h1>
-
+        <aside className="flex flex-row gap-4">
+          <div className="flex gap-3 px-5 py-2 bg-pink-50 rounded-full border-2 items-center mb-4 w-1/4">
+            <CiSearch />
+            <input
+              placeholder="Search Product by name"
+              className="bg-pink-50 outline-none w-full"
+              type="text"
+            />
+          </div>
+          <div className="py-2 px-5 bg-pink-50 rounded-full border-2 items-center mb-4 w-1/4">
+            <select>
+              <option value="">All Categories</option>
+            </select>
+          </div>
+          <div className="py-2 px-5 bg-pink-50 rounded-full border-2 items-center mb-4 w-1/4">
+            <select>
+              <option value="">Filter by Status</option>
+            </select>
+          </div>
+        </aside>
         <div className="overflow-x-auto rounded-lg border border-gray-200">
           <table className="w-full text-sm text-left text-gray-600">
             <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
@@ -124,16 +144,13 @@ ${product.description}
                   <td className="px-6 py-4 max-w-xs truncate">
                     {item.description}
                   </td>
-
                   <td className="px-6 py-4">{item.category}</td>
-
                   <td className="px-6 py-4">{item.location}</td>
-
                   <td className="px-6 py-4">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-semibold
                 ${
-                  item.status === "active"
+                  item.status === "claimed"
                     ? "bg-green-100 text-green-700"
                     : "bg-red-100 text-red-700"
                 }`}

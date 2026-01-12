@@ -14,6 +14,7 @@ export const getAllStudents = createAsyncThunk(
             });
 
             const res = await response;
+            console.log(res.data);
             return res.data;
         } catch (error) {
             console.log("Error from getSudents: ", error);
@@ -55,7 +56,7 @@ export const replyQuestion = createAsyncThunk(
                 error: (err) => err.response.data.message || err.message || "Internal Server error"
             });
             const res = await response;
-            dispatch(getQuestionsByStudentID(data.question));
+            dispatch(getQuestionsByStudentID(data.student));
             return res.data.answer;
         } catch (error) {
             console.log("Error from replyQuestion function:", error);
