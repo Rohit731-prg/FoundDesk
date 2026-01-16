@@ -21,3 +21,54 @@ export const loginFunction = createAsyncThunk(
         }
     }
 );
+
+export const getAllAdmis = createAsyncThunk(
+    "admin/getAll",
+    async () => {
+        try {
+            const response = axiosInstance.get("/admin/getAllAdmis");
+            toast.promise(response, {
+                loading: "Loading...",
+                success: "Admis fetch succussfully...!",
+                error: (err) => err.response.data.message || err.message || "Internal Server Error"
+            });
+
+            const admins = await response;
+            console.log(admins);
+            return admins.data;
+        } catch (error) {
+            console.log("Error from getAllAdmins: ", error)
+        }
+    }
+)
+
+export const addNewAdmin = createAsyncThunk(
+    "admin/create",
+    async (data, { dispatch }) => {
+        try {
+            const formdata = new FormData();
+            formdata.append("name", data.name);
+            formdata.append("email", data.email);
+            formdata.append("phone", data.phone);
+            formdata.append("adminID", data.adminID);
+            formdata.append("password", data.password);
+            formdata.append("role", data.role);
+            formdata.append("image", data.image);
+            const response = axiosInstance.post("/admin/signup", formdata, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            });
+            toast.promise(response, {
+                loading: "loading...",
+                success: (res) => res.data.message || "Admin added successfully...",
+                error: (err) => err.response.data.message || err.message || "Internal Server Error"
+            });
+
+            await response;
+            dispatch(getAllAdmis);
+        } catch (error) {
+            console.log("Error form add memner: ", error);
+        }
+    }
+)

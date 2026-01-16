@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllStudentsThunk } from "../store/StudentThunk";
@@ -9,6 +9,10 @@ import { MdDelete } from "react-icons/md";
 function StudentManagement() {
   const dispatch = useDispatch();
   const students = useSelector((state) => state.student.students);
+  const [search, setSearch] = useState("")
+  const filterStudent = students ? students.filter((student) => {
+    return student.name.toLowerCase().includes(search.toLowerCase())
+  }) : null
   const studentTable = [
     { id: 1, name: "Image" },
     { id: 2, name: "Name" },
@@ -38,6 +42,8 @@ function StudentManagement() {
                 placeholder="Search Students by name"
                 className="bg-pink-50 outline-none w-full"
                 type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <div className="px-5 py-2 bg-pink-50 rounded-full border-2 mb-4 w-1/4">
@@ -62,7 +68,7 @@ function StudentManagement() {
 
               <tbody className="divide-y divide-gray-200 bg-white">
                 {students && students.length > 0 ? (
-                  students.map((student) => (
+                  filterStudent.map((student) => (
                     <tr key={student._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <img

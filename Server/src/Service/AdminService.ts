@@ -80,3 +80,13 @@ export const Signup = async (c: Context) => {
         return c.json({ message: error.message as string }, 500);
     }
 }
+
+export const getAllAdmins = async (c: Context) => {
+    try {
+        const admins = await collection_Admin.find().toArray();
+        if (!admins || admins.length === 0) return c.json({ message: "No Records found" }, 400);
+        return c.json({ admins }, 200);
+    } catch (error: any) {
+        return c.json({ message: error.message}, 500)
+    }
+}

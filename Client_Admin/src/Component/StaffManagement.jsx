@@ -1,6 +1,17 @@
+import { useState } from "react";
 import Sidebar from "./Sidebar";
 
 function StaffManagement() {
+  const [adminDetails, setAdminDetails] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    adminID: "",
+    password: "",
+    conPassword: "",
+    role: "",
+    image: null
+  })
   return (
     <div className="flex flex-row">
       <Sidebar />
@@ -98,7 +109,22 @@ function StaffManagement() {
                     <option value="staff">Staff</option>
                   </select>
                 </div>
+
               </div>
+
+              <label htmlFor="image">
+                {adminDetails?.image ? (
+                  <div className="rounded-lg border-dashed border-2 my-5 w-1/2 h-80">
+                    <img src={URL.createObjectURL(adminDetails.image)} alt="" className="h-80 w-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center px-10 py-5 rounded-lg border-dashed border-2 my-5">
+                    <p>Upload Image Here</p>
+                    <p>Drag and Drop an Image here</p>
+                  </div>
+                )}
+              </label>
+              <input type="file" id="image" accept="image/*" className="hidden" onChange={(e) => setAdminDetails({ ...adminDetails, image: e.target.files[0]})} />
 
               {/* Button */}
               <div className="mt-8">
@@ -111,7 +137,26 @@ function StaffManagement() {
               </div>
             </form>
           </section>
-          <section></section>
+
+
+          <section className="w-1/2 rounded-lg shadow-2xl p-10">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-6">Recents Added Admins</h1>
+            <input 
+              className="bg-pink-50 outline-none w-full px-5 py-2 border-2 rounded-full"
+              type="text" />
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Admin ID</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+            </table>
+          </section>
         </aside>
       </main>
     </div>

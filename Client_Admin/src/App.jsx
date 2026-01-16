@@ -8,12 +8,13 @@ import Question from "./Component/Question"
 import Claims from "./Component/Claims"
 import StudentManagement from "./Component/Student-Managment"
 import StaffManagement from "./Component/StaffManagement"
+import Error from "./Component/Error"
 
 function App() {
   return (
     <Router>
       <Routes>
-
+        <Route path="*" element={<Error />} />
         <Route path='/' element={<Login />} />
 
         <Route path="/products" element={<ProtuctedRoute><Products /></ProtuctedRoute>} />
