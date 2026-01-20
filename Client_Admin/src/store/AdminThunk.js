@@ -26,16 +26,16 @@ export const getAllAdmis = createAsyncThunk(
     "admin/getAll",
     async () => {
         try {
+            console.log("function called")
             const response = axiosInstance.get("/admin/getAllAdmis");
             toast.promise(response, {
                 loading: "Loading...",
                 success: "Admis fetch succussfully...!",
                 error: (err) => err.response.data.message || err.message || "Internal Server Error"
             });
-
             const admins = await response;
-            console.log(admins);
-            return admins.data;
+            console.log("admins: ", admins);
+            return admins.data.admins;
         } catch (error) {
             console.log("Error from getAllAdmins: ", error)
         }
@@ -66,7 +66,7 @@ export const addNewAdmin = createAsyncThunk(
             });
 
             await response;
-            dispatch(getAllAdmis);
+            dispatch(getAllAdmis());
         } catch (error) {
             console.log("Error form add memner: ", error);
         }

@@ -101,12 +101,12 @@ ${product.description}
             />
           </div>
           <div className="py-2 px-5 bg-pink-50 rounded-full border-2 items-center mb-4 w-1/4">
-            <select>
+            <select className="w-full outline-none">
               <option value="">All Categories</option>
             </select>
           </div>
           <div className="py-2 px-5 bg-pink-50 rounded-full border-2 items-center mb-4 w-1/4">
-            <select>
+            <select className="w-full outline-none">
               <option value="">Filter by Status</option>
             </select>
           </div>
@@ -129,7 +129,7 @@ ${product.description}
             <tbody className="divide-y divide-gray-200 bg-white">
               {products?.map((item) => (
                 <tr key={item._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -137,16 +137,16 @@ ${product.description}
                     />
                   </td>
 
-                  <td className="px-6 py-4 font-medium text-gray-900">
+                  <td className="px-4 py-4 font-medium text-gray-900">
                     {item.title}
                   </td>
 
-                  <td className="px-6 py-4 max-w-xs truncate">
+                  <td className="px-4 py-4 max-w-xs truncate">
                     {item.description}
                   </td>
-                  <td className="px-6 py-4">{item.category}</td>
-                  <td className="px-6 py-4">{item.location}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">{item.category}</td>
+                  <td className="px-4 py-4">{item.location}</td>
+                  <td className="px-4 py-4">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-semibold
                 ${
@@ -159,9 +159,9 @@ ${product.description}
                     </span>
                   </td>
 
-                  <td className="px-6 py-4">{item.createdAt.split("T")[0]}</td>
+                  <td className="px-4 py-4">{item.createdAt.split("T")[0]}</td>
 
-                  <td className="px-6 py-4 flex justify-center gap-2">
+                  <td className="px-4 py-4 flex justify-center gap-2">
                     <button
                       className="btn bg-blue-500"
                       onClick={() => updateProduct(item)}
