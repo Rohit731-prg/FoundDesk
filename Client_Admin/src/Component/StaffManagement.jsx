@@ -5,6 +5,7 @@ import { addNewAdmin, getAllAdmis } from "../store/AdminThunk";
 import { FaFilePen } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { toast, Toaster } from "sonner";
+import swal from "sweetalert2"
 
 function StaffManagement() {
   const dispatch = useDispatch();
@@ -28,6 +29,36 @@ function StaffManagement() {
     e.preventDefault();
     if (adminDetails.password !== adminDetails.conPassword) return toast.error("Password must be same ..!");
     dispatch(addNewAdmin(adminDetails))
+  };
+
+  const handelUpdate = async () => {
+    const result = await swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    });
+    if (result.isConfirmed) {
+      alert("yes")
+    };
+  };
+
+  const handelDelete = async () => {
+    const result = await swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, terminate Admin!",
+    });
+    if (result.isConfirmed) {
+      alert("yes")
+    };
   }
 
   useState(() => {
@@ -41,7 +72,7 @@ function StaffManagement() {
         <h1 className="text-4xl font-medium mb-1">Staff Management</h1>
         <p className="text-gray-500">This is the Staff Management page.</p>
 
-        <aside className="flex flex-row gap-10 py-5">
+        <aside className="flex flex-row gap-8 py-5">
           <section className="w-1/2 rounded-lg ">
             <form className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg" onSubmit={handelSubmit}>
               <h2 className="text-2xl font-semibold text-gray-800 mb-6">
@@ -184,13 +215,13 @@ function StaffManagement() {
           </section>
 
 
-          <section className="w-1/2 rounded-lg shadow-2xl p-10">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-6">Recents Added Admins</h1>
+          <section className="w-1/2 rounded-lg shadow-2xl px-1 py-10">
+            <h1 className="text-2xl font-semibold text-gray-800 ml-10 mb-6">Recents Added Admins</h1>
             <input 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search Staffs by Name"
-              className="bg-pink-50 outline-none w-full px-5 py-2 border-2 rounded-full"
+              className="bg-pink-50 outline-none w-1/2 ml-10 px-5 py-2 border-2 rounded-full"
               type="text" />
 
             <table className="overflow-x-auto rounded-lg border border-gray-200 w-full my-5 text-sm text-left text-gray-600">
@@ -213,7 +244,7 @@ function StaffManagement() {
                       <td className="px-3 py-4">{admin.adminID}</td>
                       <td className="px-3 py-4">
                         <div>
-                          <button className="btn bg-blue-500 mx-1">
+                          <button onClick={() => handelUpdate(admin)} className="btn bg-blue-500 mx-1">
                             <FaFilePen />
                           </button>
                           <button className="btn bg-red-500">

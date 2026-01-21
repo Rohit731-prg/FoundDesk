@@ -5,6 +5,7 @@ import { generateToken } from "../Utils/token";
 import { setCookie } from "hono/cookie";
 import { AdminSchema } from "../Model/AdminModel";
 import { generateUrl } from "../Utils/uploadImage";
+import { ObjectId } from "mongodb";
 
 export const Login = async (c: Context) => {
     const { email, password } = await c.req.json();
@@ -88,5 +89,20 @@ export const getAllAdmins = async (c: Context) => {
         return c.json({ admins }, 200);
     } catch (error: any) {
         return c.json({ message: error.message}, 500)
+    }
+}
+
+export const terminateAdmin = async (c: Context) => {
+    const { id } = c.req.param();
+    try {
+        const adminID = c.get("admin");
+        if (id === adminID) return c.json({ message: "You can't terminate yourself" });
+
+        const admin = await collection_Admin.findOne({ _id: new ObjectId(id) });
+        if (admin?.role == "admin") return c.json({ message: "You can't terminate Super admin" });
+
+        
+    } catch (error) {
+        
     }
 }
