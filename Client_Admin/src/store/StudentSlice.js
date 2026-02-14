@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllStudentsThunk } from "./StudentThunk";
+import { getAllStudentsThunk, terminateStudent } from "./StudentThunk";
 
 const initialState = {
     students: [],
@@ -20,6 +20,16 @@ export const StudentSlice = createSlice({
                 state.students = action.payload;
             })
             .addCase(getAllStudentsThunk.rejected, (state, action) => {
+                state.loading = false;
+            })
+
+            .addCase(terminateStudent.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(terminateStudent.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(terminateStudent.rejected, (state) => {
                 state.loading = false;
             })
     }

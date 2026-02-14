@@ -72,3 +72,21 @@ export const addNewAdmin = createAsyncThunk(
         }
     }
 )
+
+export const terminateAdmin = createAsyncThunk(
+    "admin/terminate",
+    async (id, { dispatch }) => {
+        try {
+            const response = axiosInstance.delete(`/admin/terminate/${id}`);
+            toast.promise(response, {
+                loading: "Terminating admin...",
+                success: (res) => res.data.message || "Admin terminated successfully",
+                error: (err) => err.response.data.message || err.message || "Internal Server Error"
+            });
+            await response;
+            dispatch(getAllAdmis());
+        } catch (error) {
+            console.log("Error terminating admin: ", error);
+        }
+    }
+)

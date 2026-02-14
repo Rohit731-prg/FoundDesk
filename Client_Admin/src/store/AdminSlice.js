@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addNewAdmin, getAllAdmis, loginFunction } from "./AdminThunk";
+import { addNewAdmin, getAllAdmis, loginFunction, terminateAdmin } from "./AdminThunk";
 
 const initialState = {
   loading: true,
@@ -46,6 +46,18 @@ export const adminSlice = createSlice({
           .addCase(addNewAdmin.rejected, (state, action) => {
             state.loading = false;
           })
+
+          .addCase(terminateAdmin.pending, (state) => {
+            state.loading = true;
+          })
+          
+          .addCase(terminateAdmin.fulfilled, (state, action) => {
+            state.loading = false;
+          })
+          .addCase(terminateAdmin.rejected, (state, action) => {
+            state.loading = false;
+          })
+
   }
 });
 

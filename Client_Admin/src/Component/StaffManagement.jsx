@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewAdmin, getAllAdmis } from "../store/AdminThunk";
+import { addNewAdmin, getAllAdmis, terminateAdmin } from "../store/AdminThunk";
 import { FaFilePen } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { toast, Toaster } from "sonner";
@@ -46,7 +46,7 @@ function StaffManagement() {
     };
   };
 
-  const handelDelete = async () => {
+  const handelDelete = async (id) => {
     const result = await swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -57,7 +57,7 @@ function StaffManagement() {
       confirmButtonText: "Yes, terminate Admin!",
     });
     if (result.isConfirmed) {
-      alert("yes")
+      dispatch(terminateAdmin(id));
     };
   }
 
@@ -247,7 +247,9 @@ function StaffManagement() {
                           <button onClick={() => handelUpdate(admin)} className="btn bg-blue-500 mx-1">
                             <FaFilePen />
                           </button>
-                          <button className="btn bg-red-500">
+                          <button 
+                          onClick={() => handelDelete(admin._id)}
+                          className="btn bg-red-500">
                             <MdDelete />
                           </button>
                         </div>

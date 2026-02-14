@@ -19,4 +19,22 @@ export const getAllStudentsThunk = createAsyncThunk(
             console.log("Error fetching students:", error);
         }
     }
+);
+
+export const terminateStudent = createAsyncThunk(
+    "students/terminate",
+    async (id, { dispatch }) => {
+        try {
+            const response = axiosInstance.delete(`/admin/terminate/${id}`);
+            toast.promise(response, {
+                loading: "Terminating student...",
+                success: "Student terminated successfully!",
+                error: (err) => err.response?.data?.message || err.message || "Internal Server Error",
+            });
+            await response;
+            dispatch(getAllStudentsThunk());
+        } catch (error) {
+            console.log("Error terminating student:", error);
+        }
+    }
 )

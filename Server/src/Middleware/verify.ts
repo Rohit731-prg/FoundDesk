@@ -27,7 +27,6 @@ export const verifyMiddleware: MiddlewareHandler = async (c, next) => {
             if (!staff) return c.json({ message: "Staff not found" }, 401);
             c.set("staff", staff);
         }
-
         return next();
     } catch (error: any) {
         return c.json({ message: error.message }, 401);

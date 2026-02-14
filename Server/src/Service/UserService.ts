@@ -143,3 +143,18 @@ export const getAllStudents = async (c: Context) => {
         return c.json({ message: (error as Error).message }, 500);
     }
 }
+
+export const terminateUser = async (c: Context) => {
+    const { id } = c.req.param();
+    try {
+        const admin = c.get("admin");
+        if (!admin || admin.role !== "admin") return c.json({ message: "Unauthorized" }, 401);
+
+        const result = await collection_user.deleteOne({ _id: new ObjectId(id) });
+        if (result.deletedCount === 0) return c.json({ message: "User not found or already terminated" }, 404);
+
+        return c.json({ message: "User terminated successfully" }, 200);
+    } catch (error) {
+        return c.json({ message: (error as Error).message }, 500);
+    }
+}

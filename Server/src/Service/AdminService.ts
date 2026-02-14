@@ -101,8 +101,9 @@ export const terminateAdmin = async (c: Context) => {
         const admin = await collection_Admin.findOne({ _id: new ObjectId(id) });
         if (admin?.role == "admin") return c.json({ message: "You can't terminate Super admin" });
 
-        
-    } catch (error) {
-        
+        await collection_Admin.deleteOne({ _id: new ObjectId(id) });
+        return c.json({ message: "Admin terminated successfully" }, 200);
+    } catch (error: any) {
+        return c.json({ message: error.message }, 500);
     }
 }

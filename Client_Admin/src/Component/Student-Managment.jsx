@@ -5,14 +5,17 @@ import { getAllStudentsThunk } from "../store/StudentThunk";
 import { CiSearch } from "react-icons/ci";
 import { FaFilePen } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
+import swal from "sweetalert2";
 
 function StudentManagement() {
   const dispatch = useDispatch();
   const students = useSelector((state) => state.student.students);
   const [search, setSearch] = useState("")
+
   const filterStudent = students ? students.filter((student) => {
     return student.name.toLowerCase().includes(search.toLowerCase())
   }) : null
+
   const studentTable = [
     { id: 1, name: "Image" },
     { id: 2, name: "Name" },
@@ -26,6 +29,22 @@ function StudentManagement() {
   useEffect(() => {
     dispatch(getAllStudentsThunk());
   }, []);
+
+  const hendelDelete = async (id) => {
+    const result = await swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, terminate Student!",
+    });
+    if (result.isConfirmed) {
+      dispatch(terminateStudent(id));
+    }
+  }
+
   return (
     <div className="flex flex-row">
       <Sidebar />
@@ -90,7 +109,7 @@ function StudentManagement() {
                         <button className="btn bg-blue-500">
                           <FaFilePen />
                         </button>
-                        <button className="btn bg-red-500">
+                        <button onClick={() => hendelDelete(student._id)} className="btn bg-red-500">
                           <MdDelete />
                         </button>
                       </td>
